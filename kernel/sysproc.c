@@ -133,3 +133,36 @@ sys_getfreemem(void)
 {
   return count_free_bytes();
 }
+
+int
+sys_pgaccess(void)
+{
+  uint64 base;
+  int len;
+  uint64 maskaddr;
+  unsigned int mask = 0;
+  pte_t *pte;
+  struct proc *p = myproc();
+
+  argaddr(0, &base);
+  argint(1, &len);
+  argaddr(2, &maskaddr);
+
+  if(len < 0 || len > 32)
+    return -1;
+
+  for(int i = 0; i < len; i++){
+    pte = walk(p->pagetable, base + i * PGSIZE, 0);
+    if(pte == 0 || (*pte & PTE_V) == 0)
+      continue;
+    if(*pte & PTE_A){
+      mask |= (1 << i);
+      *pte &= ~PTE_A; // limpiar el bit para detectar accesos futuros
+    }
+  }
+
+  if(copyout(p->pagetable, p->sz, maskaddr, (char*)&mask, sizeof(mask)) < 0)
+    return -1;
+
+  return 0;
+}

@@ -153,7 +153,8 @@ UPROGS=\
     $U/_readtest\
     $U/_trace\
     $U/_memtest\
-
+	$U/_pgtbltest\
+	
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
 
