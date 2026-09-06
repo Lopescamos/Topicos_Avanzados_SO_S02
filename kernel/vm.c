@@ -238,6 +238,13 @@ uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int xperm)
       return 0;
     }
   }
+
+  // Rastrear asignacion de memoria
+  if(newsz > oldsz){
+    printk("[HEAP TRACE] Expansion de Heap: %ld -> %ld bytes (+%ld paginas)\n",
+           oldsz, newsz, (PGROUNDUP(newsz) - PGROUNDUP(oldsz)) / PGSIZE);
+  }
+
   return newsz;
 }
 
