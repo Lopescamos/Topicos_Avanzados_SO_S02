@@ -110,3 +110,20 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+extern int readcount;
+
+uint64
+sys_getreadcount(void)
+{
+  return readcount;
+}
+
+uint64
+sys_trace(void)
+{
+  int mask;
+  argint(0, &mask);
+  myproc()->tracemask = mask;
+  return 0;
+}

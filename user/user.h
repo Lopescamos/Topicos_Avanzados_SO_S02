@@ -25,6 +25,8 @@ char *sys_sbrk(int, int);
 int pause(int);
 int uptime(void);
 int sync(void);
+int getreadcount(void);
+int trace(int);
 
 // ulib.c
 int stat(const char *, struct stat *);
