@@ -127,3 +127,9 @@ sys_trace(void)
   myproc()->tracemask = mask;
   return 0;
 }
+
+uint64
+sys_getfreemem(void)
+{
+  return count_free_bytes();
+}

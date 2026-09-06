@@ -27,6 +27,7 @@ int uptime(void);
 int sync(void);
 int getreadcount(void);
 int trace(int);
+int getfreemem(void);
 
 // ulib.c
 int stat(const char *, struct stat *);

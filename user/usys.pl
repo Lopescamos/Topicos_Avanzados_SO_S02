@@ -45,4 +45,4 @@ entry("uptime");
 entry("sync");
 entry("getreadcount");
 entry("trace");
-
+entry("getfreemem");
