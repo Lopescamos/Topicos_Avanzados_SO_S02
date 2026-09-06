@@ -518,3 +518,29 @@ inspect_pte(pagetable_t pagetable, uint64 va)
          (*pte & PTE_X) ? 'X' : '-',
          (*pte & PTE_U) ? 'U' : '-');
 }
+
+
+static void
+vmprintwalk(pagetable_t pagetable, int depth)
+{
+  for(int i = 0; i < 512; i++){
+    pte_t pte = pagetable[i];
+    if(pte & PTE_V){
+      uint64 pa = PTE2PA(pte);
+      for(int d = 0; d < depth; d++)
+        printk(" ..");
+      printk("%d: pte %p pa %p\n", i, (void*)pte, (void*)pa);
+      // si no es hoja (no tiene R/W/X), sigue apuntando a otra tabla
+      if((pte & (PTE_R | PTE_W | PTE_X)) == 0){
+        vmprintwalk((pagetable_t)pa, depth + 1);
+      }
+    }
+  }
+}
+
+void
+vmprint(pagetable_t pagetable)
+{
+  printk("page table %p\n", (void*)pagetable);
+  vmprintwalk(pagetable, 1);
+}
