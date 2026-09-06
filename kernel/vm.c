@@ -496,16 +496,16 @@ inspect_pte(pagetable_t pagetable, uint64 va)
   pte_t *pte;
   pte = walk(pagetable, va, 0);
   if(pte == 0) {
-    printf("VA 0x%p: No existe mapeo en la tabla\n", va);
+    printk("VA 0x%p: No existe mapeo en la tabla\n", (void*)va);
     return;
   }
   if((*pte & PTE_V) == 0) {
-    printf("VA 0x%p: PTE Invalido\n", va);
+    printk("VA 0x%p: PTE Invalido\n", (void*)va);
     return;
   }
-  printf("VA 0x%p -> PA 0x%p | Permisos: %c%c%c%c\n",
-         va,
-         PTE2PA(*pte),
+  printk("VA 0x%p -> PA 0x%p | Permisos: %c%c%c%c\n",
+         (void*)va,
+         (void*)PTE2PA(*pte),
          (*pte & PTE_R) ? 'R' : '-',
          (*pte & PTE_W) ? 'W' : '-',
          (*pte & PTE_X) ? 'X' : '-',
